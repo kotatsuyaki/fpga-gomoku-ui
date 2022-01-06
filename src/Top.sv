@@ -18,9 +18,9 @@ module Top(
 
     output var logic [15:0] led
 );
-    logic valid;
-    logic [9:0] h_cnt; // 640
-    logic [9:0] v_cnt; // 480
+    logic valid /* verilator public */;
+    logic [9:0] h_cnt /* verilator public */; // 640
+    logic [9:0] v_cnt /* verilator public */; // 480
 
     // the current player and board
     logic [1:0] player;

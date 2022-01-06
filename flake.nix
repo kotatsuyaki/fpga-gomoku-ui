@@ -66,6 +66,7 @@
             clang-tools
             bear
             criterion
+            SDL2
             # Python dev
             python3
             python3Packages.ipython
