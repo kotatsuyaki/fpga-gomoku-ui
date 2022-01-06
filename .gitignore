@@ -1,7 +1,7 @@
 .direnv
 obj_dir
 *.vcd
-src/*.v
+# src/*.v
 vtop/*.v
 
 compile_commands.json
