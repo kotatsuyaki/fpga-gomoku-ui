@@ -16,9 +16,9 @@ module CellPixelLut(
     input var logic [1:0] cell_value,
     output var logic [11:0] cell_rgb
 );
-    // colors for inside and outside of the circle
-    logic [11:0] in_color, out_color;
-    assign out_color = COLOR_BOARD;
+    /* Cell stone color calculation */
+    // colors for inside the circle
+    logic [11:0] in_color;
 
     always_comb begin
         case (cell_value)
@@ -29,18 +29,50 @@ module CellPixelLut(
         endcase
     end
 
+
+    /* Final output calculation */
     // lower and upper bounds of the circle
     // if local_h is within this range, then it's within the circle
     logic [5:0] h_lower, h_upper;
     // whether local_h is within circle;
     logic local_h_in_circle;
-    assign h_upper = 6'd00 - h_lower;
-    assign local_h_in_circle
-        = (local_h >= h_lower) & (local_h < h_upper);
-    assign cell_rgb = (local_h_in_circle) ? (in_color) : (out_color);
+    // whether local_v,h is on the grid lines
+    logic local_v_h_on_grid;
 
-    // empty range
+    // calculate the final output
+    always_comb begin
+        // stone takes precedence, and then the grid
+        if (local_h_in_circle) begin
+            cell_rgb = in_color;
+        end else begin
+            if (local_v_h_on_grid) begin
+                // grid uses the same color as bg for now
+                cell_rgb = COLOR_BG;
+            end else begin
+                cell_rgb = COLOR_BOARD;
+            end
+        end
+    end
+
+
+    /* Grid line test calculation */
+    logic [3:0] on_grid_cases;
+    assign on_grid_cases[0] = (local_v == 6'd31);
+    assign on_grid_cases[1] = (local_v == 6'd32);
+    assign on_grid_cases[2] = (local_h == 6'd31);
+    assign on_grid_cases[3] = (local_h == 6'd31);
+    assign local_v_h_on_grid = |on_grid_cases;
+
+
+    /* Circle range calculation */
+    // empty range (this produces range of [63, 1), which is impossible to
+    // be fulfilled)
     localparam EMPTY = 6'b111111;
+
+    assign local_h_in_circle = (local_h >= h_lower) & (local_h < h_upper);
+
+    // calculate values of the circle bound
+    assign h_upper = 6'd00 - h_lower;
     always_comb begin
         case (local_v)
             6'd00, 6'd01, 6'd02 : h_lower = EMPTY;
