@@ -18,14 +18,16 @@ module CellPixelLut(
 );
     /* Cell stone color calculation */
     // colors for inside the circle
-    logic [11:0] in_color;
+    logic [11:0] circle_color;
+    logic non_empty;
 
+    assign non_empty = (cell_value != 2'b00);
     always_comb begin
         case (cell_value)
-            2'b00 : in_color = COLOR_BOARD;
-            2'b01 : in_color = COLOR_BLACK;
-            2'b10 : in_color = COLOR_WHITE;
-            default : in_color = COLOR_ERROR;
+            2'b00 : circle_color = COLOR_BOARD;
+            2'b01 : circle_color = COLOR_BLACK;
+            2'b10 : circle_color = COLOR_WHITE;
+            default : circle_color = COLOR_ERROR;
         endcase
     end
 
@@ -41,16 +43,18 @@ module CellPixelLut(
 
     // calculate the final output
     always_comb begin
-        // stone takes precedence, and then the grid
-        if (local_h_in_circle) begin
-            cell_rgb = in_color;
-        end else begin
-            if (local_v_h_on_grid) begin
-                // grid uses the same color as bg for now
-                cell_rgb = COLOR_BG;
+        // non-empty stone takes precedence
+        // if the stone is empty, then grid is always displayed
+        if (non_empty) begin
+            if (local_h_in_circle) begin
+                cell_rgb = circle_color;
             end else begin
-                cell_rgb = COLOR_BOARD;
+                // grid uses the same color as bg for now
+                cell_rgb = (local_v_h_on_grid) ? COLOR_BG : COLOR_BOARD;
             end
+        end else begin
+            // grid uses the same color as bg for now
+            cell_rgb = (local_v_h_on_grid) ? COLOR_BG : COLOR_BOARD;
         end
     end
 
@@ -60,7 +64,7 @@ module CellPixelLut(
     assign on_grid_cases[0] = (local_v == 6'd31);
     assign on_grid_cases[1] = (local_v == 6'd32);
     assign on_grid_cases[2] = (local_h == 6'd31);
-    assign on_grid_cases[3] = (local_h == 6'd31);
+    assign on_grid_cases[3] = (local_h == 6'd32);
     assign local_v_h_on_grid = |on_grid_cases;
 
 
