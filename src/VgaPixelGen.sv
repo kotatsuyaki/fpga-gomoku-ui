@@ -53,7 +53,7 @@ module VgaPixelGen(
     logic [1:0] cell_value;
     assign cell_value = board[cell_addr];
     CellCoordDecoder cell_coord_decoder(.x, .y, .cell_addr);
-    CircleLut circle_lut(.local_v, .local_h, .cell_value, cell_rgb);
+    CircleLut circle_lut(.local_v, .local_h, .cell_value, .cell_rgb);
 
     always_comb begin
         if (disabled) begin
