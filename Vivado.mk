@@ -2,7 +2,9 @@
 TOP = Top
 
 build:
-	vivado -mode batch -source scripts/build.tcl
+	mkdir -p build
+	vivado -mode batch -source scripts/build.tcl \
+		-log build/vivado-build.log -journal build/vivado-build.jou
 	-notify-send -t 15000 "build done"
 
 clean:
