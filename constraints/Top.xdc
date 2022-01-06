@@ -2,9 +2,11 @@ set_property PACKAGE_PIN W5 [get_ports clk]
 set_property IOSTANDARD LVCMOS33 [get_ports clk]
 create_clock -period 10.000 -name sys_clk_pin -waveform {0.000 5.000} -add [get_ports clk]
 
-set_property PACKAGE_PIN U17 [get_ports rst]
+# This is the rightmost switch, since we're running out of buttons
+set_property PACKAGE_PIN V17 [get_ports rst]
 set_property IOSTANDARD LVCMOS33 [get_ports rst]
 
+# Vga
 set_property PACKAGE_PIN G19 [get_ports {vga_red[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {vga_red[0]}]
 set_property PACKAGE_PIN H19 [get_ports {vga_red[1]}]
@@ -33,6 +35,18 @@ set_property PACKAGE_PIN P19 [get_ports hsync]
 set_property IOSTANDARD LVCMOS33 [get_ports hsync]
 set_property PACKAGE_PIN R19 [get_ports vsync]
 set_property IOSTANDARD LVCMOS33 [get_ports vsync]
+
+# Buttons
+set_property PACKAGE_PIN T18 [get_ports raw_up]
+set_property IOSTANDARD LVCMOS33 [get_ports raw_up]
+set_property PACKAGE_PIN W19 [get_ports raw_left]
+set_property IOSTANDARD LVCMOS33 [get_ports raw_left]
+set_property PACKAGE_PIN U18 [get_ports raw_center]
+set_property IOSTANDARD LVCMOS33 [get_ports raw_center]
+set_property PACKAGE_PIN T17 [get_ports raw_right]
+set_property IOSTANDARD LVCMOS33 [get_ports raw_right]
+set_property PACKAGE_PIN U17 [get_ports raw_down]
+set_property IOSTANDARD LVCMOS33 [get_ports raw_down]
 
 set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
 set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]
