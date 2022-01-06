@@ -14,12 +14,19 @@ module Top(
     logic [9:0] h_cnt; // 640
     logic [9:0] v_cnt; // 480
 
+    logic [1:0] board [5:0][5:0];
+    initial begin
+        $readmemb("../mem/board.mem", board);
+    end
+
     VgaPixelGen vga_pixel_gen(
         .h_cnt,
+        .v_cnt,
         .valid,
         .vga_red,
         .vga_grn,
-        .vga_blu
+        .vga_blu,
+        .board
     );
 
     VgaCtrl vga_ctrl(
