@@ -1,6 +1,8 @@
 `timescale 1ns/1ps
 `default_nettype none
 
+// Converter from cell (x, y) coords to its cell address.
+//
 // This module takes (x, y) coordinate of the cell between (0, 0) and (6, 6)
 // (exclusive), and generates the address of the cell.
 // For (x, y) values that are out of range, the output should be regarded as

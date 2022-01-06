@@ -3,6 +3,7 @@
 
 `include "colors.vh"
 
+// Converter from board data to Vga display output.
 module VgaPixelGen(
     input var logic [9:0] h_cnt,
     input var logic [9:0] v_cnt,
@@ -30,6 +31,7 @@ module VgaPixelGen(
     assign oob_cases[2] = v_cnt < 10'd48;   // 480/2 - 3*64
     assign oob_cases[3] = v_cnt >= 10'd432; // 480/2 + 3*64
 
+
     /* Coordinate transform */
     // coordinates w.r.t. top-left corner of the board
     logic [9:0] v, h;
@@ -45,6 +47,7 @@ module VgaPixelGen(
     logic [2:0] x, y;
     assign {x, local_v} = v[8:0];
     assign {y, local_h} = h[8:0];
+
 
     /* Content of cell */
     // rgb value of the current pixel if it's within a cell
