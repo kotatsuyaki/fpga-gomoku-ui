@@ -10,15 +10,9 @@ module Top(
     output var logic hsync,
     output var logic vsync
 );
-    logic clk_25;
     logic valid;
     logic [9:0] h_cnt; // 640
     logic [9:0] v_cnt; // 480
-
-    VgaClockDiv vga_clock_div(
-        .clk,
-        .clk_out(clk_25)
-    );
 
     VgaPixelGen vga_pixel_gen(
         .h_cnt,
@@ -29,7 +23,7 @@ module Top(
     );
 
     VgaCtrl vga_ctrl(
-        .pclk(clk_25),
+        .clk,
         .reset(rst),
         .hsync,
         .vsync,

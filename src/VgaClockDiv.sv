@@ -6,12 +6,9 @@ module VgaClockDiv(
     output var logic clk_out
 );
     logic [1:0] num;
-    logic [1:0] next_num;
-
-    assign next_num = num + 2'b1;
-    assign clk_out = num[1];
+    assign clk_out = (num == 2'b00);
 
     always_ff @(posedge clk) begin
-        num <= next_num;
+        num <= num + 2'b01;
     end
 endmodule
