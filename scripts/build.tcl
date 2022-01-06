@@ -4,7 +4,8 @@ file mkdir $outputDir
 
 set_param general.maxThreads 16
 
-read_verilog -sv [ glob src/*.v ]
+read_verilog [ glob src/*.v ]
+read_verilog -sv [ glob src/*.sv ]
 read_xdc [ glob constraints/*.xdc ]
 
 
