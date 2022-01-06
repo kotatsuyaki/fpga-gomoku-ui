@@ -19,7 +19,7 @@ module top(
       .clk_out(clk_25MHz)
     );
 
-   pixel_gen pixel_gen_inst(
+   VgaPixelGen vga_pixel_gen(
        .h_cnt(h_cnt),
        .valid(valid),
        .vgaRed(vgaRed),
