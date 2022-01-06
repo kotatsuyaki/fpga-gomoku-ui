@@ -14,7 +14,7 @@ module Top(
     logic [9:0] h_cnt; // 640
     logic [9:0] v_cnt; // 480
 
-    logic [1:0] board [5:0][5:0];
+    logic [1:0] board [36-1:0];
     initial begin
         $readmemb("../mem/board.mem", board);
     end
