@@ -8,16 +8,15 @@ module top(
    output vsync
     );
 
-
     wire clk_25MHz;
     wire valid;
     wire [9:0] h_cnt; //640
     wire [9:0] v_cnt;  //480
 
 
-     clock_divisor clk_wiz_0_inst(
+    VgaClockDiv vga_clock_div(
       .clk(clk),
-      .clk1(clk_25MHz)
+      .clk_out(clk_25MHz)
     );
 
    pixel_gen pixel_gen_inst(
