@@ -1,5 +1,5 @@
 .PHONY: build program clean
-TOP = top
+TOP = Top
 
 build:
 	vivado -mode batch -source scripts/build.tcl
