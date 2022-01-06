@@ -1,12 +1,15 @@
 `timescale 1ns/1ps
 `default_nettype none
 
+// Game logic fsm
 module GameFsm(
     input var logic clk,
     input var logic rst,
     output var logic [1:0] board [36-1:0],
     output var logic [1:0] player,
     output var logic [5:0] cursor,
+    // 00: not done, 01: black wins, 10: white wins, 11: tie
+    output var logic [1:0] status,
     input var up, down, left, right, center
 );
     logic [1:0] next_board [36-1:0];
@@ -79,4 +82,10 @@ module GameFsm(
             default : next_cursor = cursor;
         endcase
     end
+
+    /* Game status generation */
+    GameStatusGen game_status_gen(
+        .board,
+        .status
+    );
 endmodule

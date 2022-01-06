@@ -14,7 +14,9 @@ module Top(
     input var logic raw_down,
     input var logic raw_left,
     input var logic raw_right,
-    input var logic raw_center
+    input var logic raw_center,
+
+    output var logic [15:0] led
 );
     logic valid;
     logic [9:0] h_cnt; // 640
@@ -22,6 +24,7 @@ module Top(
 
     // the current player and board
     logic [1:0] player;
+    logic [1:0] status;
     logic [1:0] board [36-1:0];
     logic [5:0] cursor;
 
@@ -33,12 +36,17 @@ module Top(
     Button btn_right(.clk, .rst, .in(raw_right), .out(right));
     Button btn_center(.clk, .rst, .in(raw_center), .out(center));
 
+    // set unused led's to low
+    assign led[15:2] = 14'b0;
+    assign led[1:0] = status;
+
     GameFsm game_fsm(
         .clk,
         .rst,
         .board,
         .player,
         .cursor,
+        .status,
         .up, .down, .left, .right, .center
     );
 
