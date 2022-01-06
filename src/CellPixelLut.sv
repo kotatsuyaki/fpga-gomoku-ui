@@ -8,12 +8,14 @@
 // Inputs:
 //   local_v, local_h: coordinate within the cell
 //   cell_value: the color of the stone at current cell
+//   cell_selected: whether the current cell is the cursor position
 // Outputs:
 //   cell_rgb: 12-bit Rgb value to be used as vga output
 module CellPixelLut(
     input var logic [5:0] local_v,
     input var logic [5:0] local_h,
     input var logic [1:0] cell_value,
+    input var logic cell_selected,
     output var logic [11:0] cell_rgb
 );
     /* Cell stone color calculation */
@@ -40,21 +42,28 @@ module CellPixelLut(
     logic local_h_in_circle;
     // whether local_v,h is on the grid lines
     logic local_v_h_on_grid;
+    // whether loval_v,h is on the border (cursor select) lines
+    logic local_v_h_on_border;
 
     // calculate the final output
     always_comb begin
-        // non-empty stone takes precedence
-        // if the stone is empty, then grid is always displayed
-        if (non_empty) begin
-            if (local_h_in_circle) begin
-                cell_rgb = circle_color;
+        if (cell_selected & local_v_h_on_border) begin
+            // border overwrites everything
+            cell_rgb = COLOR_CURSOR;
+        end else begin
+            // non-empty stone takes precedence over the grid
+            // if the stone is empty, then grid is always displayed
+            if (non_empty) begin
+                if (local_h_in_circle) begin
+                    cell_rgb = circle_color;
+                end else begin
+                    // grid uses the same color as bg for now
+                    cell_rgb = (local_v_h_on_grid) ? COLOR_BG : COLOR_BOARD;
+                end
             end else begin
                 // grid uses the same color as bg for now
                 cell_rgb = (local_v_h_on_grid) ? COLOR_BG : COLOR_BOARD;
             end
-        end else begin
-            // grid uses the same color as bg for now
-            cell_rgb = (local_v_h_on_grid) ? COLOR_BG : COLOR_BOARD;
         end
     end
 
@@ -66,6 +75,19 @@ module CellPixelLut(
     assign on_grid_cases[2] = (local_h == 6'd31);
     assign on_grid_cases[3] = (local_h == 6'd32);
     assign local_v_h_on_grid = |on_grid_cases;
+
+
+    /* Border line test calculation */
+    logic [7:0] on_border_cases;
+    assign on_border_cases[0] = (local_v == 6'd00);
+    assign on_border_cases[1] = (local_v == 6'd01);
+    assign on_border_cases[2] = (local_v == 6'd62);
+    assign on_border_cases[3] = (local_v == 6'd63);
+    assign on_border_cases[4] = (local_h == 6'd00);
+    assign on_border_cases[5] = (local_h == 6'd01);
+    assign on_border_cases[6] = (local_h == 6'd62);
+    assign on_border_cases[7] = (local_h == 6'd63);
+    assign local_v_h_on_border = |on_border_cases;
 
 
     /* Circle range calculation */

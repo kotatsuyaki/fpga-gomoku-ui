@@ -65,6 +65,8 @@ module GameFsm(
 
     /* Next cursor calculation */
     always_comb begin
+        // buttons take priority in this order
+        // the cursor value is bounded in [0, 35) and never goes outside
         casez ({left, right, up, down})
             4'b1??? : next_cursor
                 = (cursor - 6'd1 >= 6'd36) ? cursor : (cursor - 6'd1);

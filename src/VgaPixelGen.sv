@@ -12,7 +12,8 @@ module VgaPixelGen(
     output var logic [3:0] vga_grn,
     output var logic [3:0] vga_blu,
     input var logic [1:0] board [36-1:0],
-    input var logic [1:0] player
+    input var logic [1:0] player,
+    input var logic [5:0] cursor
 );
     /* Disabler logic */
     // detect if the output should be disabled
@@ -55,9 +56,15 @@ module VgaPixelGen(
     logic [11:0] cell_rgb;
     logic [5:0] cell_addr;
     logic [1:0] cell_value;
+    logic cell_selected;
+
     assign cell_value = board[cell_addr];
+    assign cell_selected = (cursor == cell_addr);
+
     CellCoordDecoder cell_coord_decoder(.x, .y, .cell_addr);
-    CellPixelLut cell_pixel_lut(.local_v, .local_h, .cell_value, .cell_rgb);
+    CellPixelLut cell_pixel_lut(
+        .local_v, .local_h, .cell_value, .cell_rgb, .cell_selected
+    );
 
     always_comb begin
         if (disabled) begin

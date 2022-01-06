@@ -23,6 +23,7 @@ module Top(
     // the current player and board
     logic [1:0] player;
     logic [1:0] board [36-1:0];
+    logic [5:0] cursor;
 
     // sanitize the button input signals
     logic up, down, left, right, center;
@@ -37,6 +38,7 @@ module Top(
         .rst,
         .board,
         .player,
+        .cursor,
         .up, .down, .left, .right, .center
     );
 
@@ -48,7 +50,8 @@ module Top(
         .vga_grn,
         .vga_blu,
         .board,
-        .player
+        .player,
+        .cursor
     );
 
     VgaCtrl vga_ctrl(

@@ -7,6 +7,11 @@
 // (exclusive), and generates the address of the cell.
 // For (x, y) values that are out of range, the output should be regarded as
 // trash.
+//
+// Inputs:
+//   x, y: the cell coordinates
+// Outputs:
+//   cell_addr: the cell address, bounded within [0, 36)
 module CellCoordDecoder(
     input var logic [2:0] x,
     input var logic [2:0] y,
